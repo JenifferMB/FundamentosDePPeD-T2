@@ -25,7 +25,7 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
     }
 
     @Override
-    public Boolean autenticarConta(double x, double y) throws RemoteException {
+    public Boolean autenticarConta(int idConta) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -43,9 +43,10 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
     }
 
     @Override
-    public Double saldo(int x) throws RemoteException {
+    public Double saldo(int idConta) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+  
 }
