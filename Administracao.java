@@ -6,7 +6,7 @@ import java.rmi.*;
 
 
 public interface Administracao {
-    public Boolean abrirConta (String nome, int cpf, char agencia) throws RemoteException;
+    public Boolean abrirConta (String nome, int id, char agencia) throws RemoteException;
     public Boolean fecharConta (int idConta, char agencia) throws RemoteException;
     public Boolean autenticarConta (int idConta) throws RemoteException;
     public Boolean depositar (double deposita) throws RemoteException;

@@ -13,9 +13,9 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
     }
 
     @Override
-    public int abrirConta(String nome, int cpf) throws RemoteException {
+    public Boolean abrirConta(String nome, int cpf) throws RemoteException {
         // TODO Auto-generated method stub
-        return 0;
+        return null;
     }
 
     @Override
@@ -31,13 +31,13 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
     }
 
     @Override
-    public Double depositar(double deposita) throws RemoteException {
+    public Boolean depositar(double deposita) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Double retirar(double retira) throws RemoteException {
+    public Boolean retirar(double retira) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -48,5 +48,11 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "AgenciaImp []";
+    }
+
+   
   
 }

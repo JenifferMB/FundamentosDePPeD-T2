@@ -13,7 +13,7 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
     }
 
     @Override
-    public Boolean abrirConta(String nome, int cpf, char agencia) throws RemoteException {
+    public Boolean abrirConta(String nome, int id, char agencia) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
