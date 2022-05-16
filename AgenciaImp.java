@@ -13,7 +13,7 @@ public class AgenciaImp extends UnicastRemoteObject implements Agencia{
     }
 
     @Override
-    public Boolean abrirConta(String nome, int cpf) throws RemoteException {
+    public Boolean abrirConta(String nome, int id) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }

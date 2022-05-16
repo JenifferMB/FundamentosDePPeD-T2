@@ -5,7 +5,7 @@
 import java.rmi.*;
 
 public interface Agencia extends Remote {
-    public Boolean abrirConta (String nome, int cpf) throws RemoteException; //nao idempotentes
+    public Boolean abrirConta (String nome, int id) throws RemoteException; //nao idempotentes
     public Boolean fecharConta (int idConta) throws RemoteException;
     public Boolean autenticarConta (int idConta) throws RemoteException;
     public Boolean depositar (double deposita) throws RemoteException; //nao idempotentes
