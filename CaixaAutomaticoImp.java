@@ -13,27 +13,24 @@ public class CaixaAutomaticoImp extends UnicastRemoteObject implements CaixaAuto
     }
 
     @Override
-    public Boolean depositar(double deposita) throws RemoteException {
+    public Boolean depositar(double deposita, String cpf, String opId) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Boolean retirar(double retira) throws RemoteException {
+    public Boolean retirar(double retira, String cpf, String opId) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Double saldo(int idConta) throws RemoteException {
+    public Double saldo(String cpf) throws RemoteException {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "CaixaAutomaticoImp []";
-    }
-
+  
+    
     
 }

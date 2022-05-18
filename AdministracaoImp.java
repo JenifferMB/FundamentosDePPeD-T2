@@ -11,12 +11,18 @@ import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 public class AdministracaoImp extends UnicastRemoteObject implements Administracao{
 
     HashMap<String, Conta> map = new HashMap<>();
+    HashMap<String, Character> idempotencia= new HashMap<>();
+
     protected AdministracaoImp() throws RemoteException {
         super();
     }
 
     @Override
-    public Boolean abrirConta(String nome, String cpf, Boolean agencia) throws RemoteException {
+    public Boolean abrirConta(String nome, String cpf, Boolean agencia, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){
+            throw new RemoteException("operação de abrir repetida");
+        }
+        idempotencia.put(opId, 'a');
         if(agencia){
             if(autenticarConta(cpf)){return false;}
             Conta c = new Conta(nome, cpf);
@@ -27,7 +33,12 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
     }
 
     @Override
-    public Boolean fecharConta(String cpf, Boolean agencia) throws RemoteException {
+    public Boolean fecharConta(String cpf, Boolean agencia, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){
+            throw new RemoteException("operação de fechar repetida");
+        }
+        idempotencia.put(opId, 'a');
+
         if(agencia){
             if(!autenticarConta(cpf)){return false;}
             map.remove(cpf);
@@ -43,7 +54,12 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
     }
 
     @Override
-    public Boolean depositar(double deposita, String cpf) throws RemoteException {
+    public Boolean depositar(double deposita, String cpf, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){
+            throw new RemoteException("operação de deposito repetida");
+        }
+        idempotencia.put(opId, 'a');
+
         if(deposita<0){return false;}
         if(!autenticarConta(cpf)){return false;}
         Conta c = map.get(cpf);
@@ -53,7 +69,12 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
     }
 
     @Override
-    public Boolean retirar(double retira, String cpf) throws RemoteException {
+    public Boolean retirar(double retira, String cpf, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){
+            throw new RemoteException("operação de retirada repetida");
+        }
+        idempotencia.put(opId, 'a');
+
         if(!autenticarConta(cpf)){return false;}
         Conta c = map.get(cpf);
         if(retira<0 || retira > c.getSaldo()){return false;}
