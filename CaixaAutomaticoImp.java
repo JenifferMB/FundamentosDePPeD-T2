@@ -30,7 +30,32 @@ public class CaixaAutomaticoImp extends UnicastRemoteObject implements CaixaAuto
         return null;
     }
 
-  
+  public static void main(String[] args) {
+      
+    try {
+        //Procura pelo servico de admin no IP e porta definidos
+        Administracao a = (Administracao) Naming.lookup("rmi://localhost:1099/AdminService");
+
+        /*
+        System.out.println("1 - soma");
+        System.out.println("2 - sub");
+        System.out.println("3 - mult");
+        System.out.println("4 - div");
+        System.out.println("5 - store");
+        System.out.println("6 - load");
+        System.out.println("0 - sair");
+        boolean exec = true;
+        double result;
+        while (exec) {
+
+            int key = in.nextInt();
+            switch (key) 
+        }
+        */
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+  }
     
     
 }
