@@ -18,7 +18,7 @@ public class AdminServer {
                 LocateRegistry.createRegistry(1099);
                 //Cria o objeto que implementa os metodos que serao servidos
                 AdministracaoImp adm = new AdministracaoImp();
-                //Coloca na porta registrada o servico da calculadora
+                //Coloca na porta registrada o servico da administração
                 Naming.bind("AdminService", (Remote) adm);
                 System.out.println("Conexao estabelecida.");
     

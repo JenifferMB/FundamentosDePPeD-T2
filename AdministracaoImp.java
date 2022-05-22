@@ -54,22 +54,22 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
     }
 
     @Override
-    public Boolean depositar(double deposita, String cpf, String opId) throws RemoteException {
+    public Boolean depositar(double valor, String cpf, String opId) throws RemoteException {
         if(idempotencia.containsKey(opId)){
             throw new RemoteException("operação de deposito repetida");
         }
         idempotencia.put(opId, 'a');
 
-        if(deposita<0){return false;}
+        if(valor<0){return false;}
         if(!autenticarConta(cpf)){return false;}
         Conta c = map.get(cpf);
-        double aux = c.getSaldo()+deposita;
+        double aux = c.getSaldo()+valor;
         c.setSaldo(aux);
         return true;
     }
 
     @Override
-    public Boolean retirar(double retira, String cpf, String opId) throws RemoteException {
+    public Boolean retirar(double valor, String cpf, String opId) throws RemoteException {
         if(idempotencia.containsKey(opId)){
             throw new RemoteException("operação de retirada repetida");
         }
@@ -77,10 +77,25 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
 
         if(!autenticarConta(cpf)){return false;}
         Conta c = map.get(cpf);
-        if(retira<0 || retira > c.getSaldo()){return false;}
-        double aux = c.getSaldo()-retira;
+        if(valor<0 || valor > c.getSaldo()){return false;}
+        double aux = c.getSaldo()-valor;
         c.setSaldo(aux);
         return true;
+    }
+
+    @Override
+    public void conectar(String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){
+            throw new RemoteException("operação de retirada repetida");
+        }
+        idempotencia.put(opId, 'a');
+        
+    }
+
+    @Override
+    public Double ConsultaSaldo(String cpf) throws RemoteException {
+        if(!autenticarConta(cpf)){return 0.0;}
+        return map.get(cpf).getSaldo();
     }
 
 
