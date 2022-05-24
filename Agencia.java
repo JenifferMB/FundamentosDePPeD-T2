@@ -39,6 +39,7 @@ public class Agencia extends UnicastRemoteObject{
                 System.out.println("5 - Saque");
                 System.out.println("6 - Consulta Saldo");
                 System.out.println("0 - sair");
+                System.out.println("9 - deposito com injeção de falhas");
             
 
                 int key = n.nextInt();
@@ -86,7 +87,7 @@ public class Agencia extends UnicastRemoteObject{
                     case 4://deposito
                     System.out.println("Digite o identificador da conta (cpf): ");
                     iaux = n.nextLine();
-                    System.out.println("Digite o valor a ser sacado: ");
+                    System.out.println("Digite o valor a ser depositado: ");
                     vaux = n.nextDouble();
                                         
                     if(a.deposito(vaux, iaux, s + id++)){
@@ -117,15 +118,44 @@ public class Agencia extends UnicastRemoteObject{
                     System.out.println();
                     break;
 
+                    case 9://deposito com injeção de falhas
+                    System.out.println("deposito com injeção de falhas:");
+                    System.out.println("Digite o identificador da conta (cpf): ");
+                    iaux = n.nextLine();
+                    System.out.println("Digite o valor a ser depositado: ");
+                    vaux = n.nextDouble(); 
+                    String opID =s + id++;
+
+                    if(a.deposito(vaux, iaux, opID)){
+                        System.out.println("Deposito realizado com sucesso!");
+                    }else{
+                        System.out.println("Erro ao realizar o deposito!");
+                    }
+                    System.out.println("Espera 5 segundos e então");
+                    System.out.println("Repete a chamada com o mesmo opID");
+                    System.out.println("Vai gerar exceção");
+                    Thread.sleep(5000);
+
+                    
+                    if(a.deposito(vaux, iaux, opID)){
+                        System.out.println("Deposito realizado com sucesso!");
+                    }else{
+                        System.out.println("Erro ao realizar o deposito!");
+                    }
+
+                    break;
+
                     case 0://sair
                     exec=false;
                 
                     default:
                     break;
                 }
-                n.close();
+                
             
-            }} catch (Exception e) {
+            }
+            
+        } catch (Exception e) {
                 e.printStackTrace();
                 }
     }
