@@ -6,8 +6,6 @@ import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
 public class AdministracaoImp extends UnicastRemoteObject implements Administracao{
 
     HashMap<String, Conta> map = new HashMap<>();
@@ -19,82 +17,90 @@ public class AdministracaoImp extends UnicastRemoteObject implements Administrac
 
     @Override
     public Boolean abrirConta(String nome, String cpf, Boolean agencia, String opId) throws RemoteException {
-        if(idempotencia.containsKey(opId)){
-            throw new RemoteException("operação de abrir repetida");
+        if(idempotencia.containsKey(opId)){//se for operação repetida
+            throw new RemoteException("operação de abrir conta repetida");//gera exceção
         }
-        idempotencia.put(opId, 'a');
-        if(agencia){
-            if(autenticarConta(cpf)){return false;}
+        
+        if(agencia){//se for agencia, pode abrir uma conta
+            if(autenticarConta(cpf)){return false;}//se a conta ja existe, não cria outra
             Conta c = new Conta(nome, cpf);
             map.put(cpf, c);
+            System.out.println("aberto com sucesso");//print de confirmação no terminal do server
+            idempotencia.put(opId, 'a');//adiciona a identificação de operação na estrutura de salvamento
             return true;
         }
+        //se não for agencia, não pode abrir uma conta
         return false;
     }
 
     @Override
     public Boolean fecharConta(String cpf, Boolean agencia, String opId) throws RemoteException {
-        if(idempotencia.containsKey(opId)){
-            throw new RemoteException("operação de fechar repetida");
+        if(idempotencia.containsKey(opId)){//se for operação repetida
+            throw new RemoteException("operação de fechar repetida");//gera exceção
         }
-        idempotencia.put(opId, 'a');
 
-        if(agencia){
-            if(!autenticarConta(cpf)){return false;}
+        if(agencia){//se for agencia, pode abrir uma conta
+            if(autenticarConta(cpf)==false){return false;}//se a conta não existe, não tem como fechar
             map.remove(cpf);
+            System.out.println("fechado com sucesso");//print de confirmação no terminal do server
+            idempotencia.put(opId, 'a');//adiciona a identificação de operação na estrutura de salvamento
+            return true;
+        }
+        //se não for agencia, não pode abrir uma conta
+        return false;
+    }
+
+    @Override
+    public Boolean autenticarConta(String cpf) throws RemoteException {
+        if(map.containsKey(cpf)){//se a conta existe
+            System.out.println("autenticado com sucesso");//print de confirmação no terminal do server
             return true;
         }
         return false;
     }
 
     @Override
-    public Boolean autenticarConta(String cpf) throws RemoteException {
-        if(map.containsKey(cpf)){return true;}
-        return false;
-    }
-
-    @Override
-    public Boolean depositar(double valor, String cpf, String opId) throws RemoteException {
-        if(idempotencia.containsKey(opId)){
-            throw new RemoteException("operação de deposito repetida");
+    public Boolean deposito(double valor, String cpf, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){//se for operação repetida
+            throw new RemoteException("operação de deposito repetida");//gera exceção
         }
-        idempotencia.put(opId, 'a');
-
-        if(valor<0){return false;}
-        if(!autenticarConta(cpf)){return false;}
-        Conta c = map.get(cpf);
+        
+        if(valor<0){return false;}//se for valor invalido
+        if(autenticarConta(cpf)==false){return false;}//se a conta não existe, não tem como depositar
+        Conta c = map.get(cpf);             
         double aux = c.getSaldo()+valor;
         c.setSaldo(aux);
+        System.out.println("depositado com sucesso");//print de confirmação no terminal do server
+        idempotencia.put(opId, 'a');//adiciona a identificação de operação na estrutura de salvamento
         return true;
     }
 
     @Override
-    public Boolean retirar(double valor, String cpf, String opId) throws RemoteException {
-        if(idempotencia.containsKey(opId)){
-            throw new RemoteException("operação de retirada repetida");
+    public Boolean saque(double valor, String cpf, String opId) throws RemoteException {
+        if(idempotencia.containsKey(opId)){//se for operação repetida
+            throw new RemoteException("operação de retirada repetida");//gera exceção
         }
-        idempotencia.put(opId, 'a');
-
-        if(!autenticarConta(cpf)){return false;}
+        
+        if(autenticarConta(cpf)==false){return false;}//se a conta não existe, não tem como sacar
         Conta c = map.get(cpf);
-        if(valor<0 || valor > c.getSaldo()){return false;}
+        if(valor<0 || valor > c.getSaldo()){return false;}//se for valor invalido
         double aux = c.getSaldo()-valor;
         c.setSaldo(aux);
+        System.out.println("retirado com sucesso");//print de confirmação no terminal do server
+        idempotencia.put(opId, 'a');//adiciona a identificação de operação na estrutura de salvamento
         return true;
     }
 
     @Override
     public void conectar(String opId) throws RemoteException {
-        if(idempotencia.containsKey(opId)){
-            throw new RemoteException("operação de retirada repetida");
-        }
-        idempotencia.put(opId, 'a');
-        
+        idempotencia.put(opId, 'a');//adiciona a identificação de operação na estrutura de salvamento
+        System.out.println("conectado com sucesso");//print de confirmação no terminal do server
     }
 
     @Override
     public Double ConsultaSaldo(String cpf) throws RemoteException {
-        if(!autenticarConta(cpf)){return 0.0;}
+        if(autenticarConta(cpf)==false){return -0.01;}
+        System.out.println("consultado com sucesso");//print de confirmação no terminal do server
         return map.get(cpf).getSaldo();
     }
 
