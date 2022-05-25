@@ -32,14 +32,15 @@ public class Agencia extends UnicastRemoteObject{
             Double vaux;
             String nomeaux;
             while (exec) {
+                System.out.println();
                 System.out.println("1 - AbrirConta");
                 System.out.println("2 - Fechar Conta");
                 System.out.println("3 - Autenticar Conta");
-                System.out.println("4 - Depósito");
+                System.out.println("4 - Deposito");
                 System.out.println("5 - Saque");
                 System.out.println("6 - Consulta Saldo");
                 System.out.println("0 - sair");
-                System.out.println("9 - deposito com injeção de falhas");
+                System.out.println("9 - deposito com injecao de falhas");
             
 
                 int key = n.nextInt();
@@ -77,9 +78,9 @@ public class Agencia extends UnicastRemoteObject{
                     iaux = n.nextLine();
                     
                     if(a.autenticarConta(iaux)){
-                        System.out.println("\nConta existente!\n");
+                        System.out.println("\nConta existente!");
                     }else{
-                        System.out.println("\nConta não existente!\n");
+                        System.out.println("\nConta nao existente!");
                     } 
                     
                     break;
@@ -100,7 +101,7 @@ public class Agencia extends UnicastRemoteObject{
                     case 5://saque
                     System.out.println("Digite o identificador da conta (cpf): ");
                     iaux = n.nextLine();
-                    System.out.println("Digite o valor a ser depositado: ");
+                    System.out.println("Digite o valor a ser sacado: ");
                     vaux = n.nextDouble();
 
                     if(a.saque(vaux, iaux, s + id++)){
@@ -119,7 +120,7 @@ public class Agencia extends UnicastRemoteObject{
                     break;
 
                     case 9://deposito com injeção de falhas
-                    System.out.println("deposito com injeção de falhas:");
+                    System.out.println("Deposito com injeção de falhas:");
                     System.out.println("Digite o identificador da conta (cpf): ");
                     iaux = n.nextLine();
                     System.out.println("Digite o valor a ser depositado: ");
@@ -131,9 +132,9 @@ public class Agencia extends UnicastRemoteObject{
                     }else{
                         System.out.println("Erro ao realizar o deposito!");
                     }
-                    System.out.println("Espera 5 segundos e então");
+                    System.out.println("Espera 5 segundos e entao");
                     System.out.println("Repete a chamada com o mesmo opID");
-                    System.out.println("Vai gerar exceção");
+                    System.out.println("Vai gerar excecao");
                     Thread.sleep(5000);
 
                     

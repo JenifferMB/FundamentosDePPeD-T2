@@ -1,5 +1,5 @@
+
 public class Conta {
-    //nome, cpf, saldo
     private String nome;
     private String id;
     private Double saldo;
@@ -32,12 +32,5 @@ public class Conta {
 
     public void setSaldo(Double saldo) {
         this.saldo = saldo;
-    }
-
-    @Override
-    public String toString() {
-        return "Conta [id=" + id + ", nome=" + nome + ", saldo=" + saldo + "]";
-    }
-
-    
+    }    
 }
